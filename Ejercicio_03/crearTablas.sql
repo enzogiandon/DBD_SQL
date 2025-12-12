@@ -1,110 +1,84 @@
--- ==========================================
--- 1. CREACIÓN DE TABLAS (DDL)
--- ==========================================
+-- =============================================
+-- INSERTAR BANDAS
+-- =============================================
+-- Banda 1: Rock and Roll. Tocará en dos escenarios clave.
+INSERT INTO Banda VALUES (10, 'Los Rocanroles', 'rock and roll', 1990);
 
-CREATE TABLE Banda (
-    codigoB INT PRIMARY KEY,
-    nombreBanda VARCHAR(100),
-    genero_musical VARCHAR(50),
-    anio_creacion INT
-);
+-- Banda 2: Pop. Para probar filtros de género.
+INSERT INTO Banda VALUES (20, 'Pop Stars', 'pop', 2005);
 
-CREATE TABLE Escenario (
-    nroEscenario INT PRIMARY KEY,
-    nombre_escenario VARCHAR(100),
-    ubicación VARCHAR(100),
-    cubierto BOOLEAN, -- TRUE si es cubierto, FALSE si es al aire libre
-    m2 INT,
-    descripción VARCHAR(200)
-);
+-- Banda 3: Caso de éxito para fechas (tocó 2023, NO 2022).
+INSERT INTO Banda VALUES (30, 'La Nueva Ola', 'indie', 2015);
 
-CREATE TABLE Integrante (
-    DNI VARCHAR(20) PRIMARY KEY,
-    nombre VARCHAR(50),
-    apellido VARCHAR(50),
-    dirección VARCHAR(100),
-    email VARCHAR(100),
-    fecha_nacimiento DATE,
-    codigoB INT,
-    FOREIGN KEY (codigoB) REFERENCES Banda(codigoB)
-);
+-- Banda 4: Caso de fallo para fechas (tocó 2023 Y TAMBIÉN 2022).
+INSERT INTO Banda VALUES (40, 'Los Clásicos', 'jazz', 1980);
 
-CREATE TABLE Recital (
-    fecha DATE,
-    hora TIME,
-    nroEscenario INT,
-    codigoB INT,
-    PRIMARY KEY (fecha, hora, nroEscenario), -- Clave primaria compuesta asumida
-    FOREIGN KEY (nroEscenario) REFERENCES Escenario(nroEscenario),
-    FOREIGN KEY (codigoB) REFERENCES Banda(codigoB)
-);
+-- Banda 5: Para el punto 9 (Corregir nombre).
+INSERT INTO Banda VALUES (50, 'Mempis la Blusera', 'blues', 1978);
 
--- ==========================================
--- 2. CARGA DE DATOS (DML)
--- ==========================================
+-- Banda 6: Banda numerosa (Para el punto 5, > 5 integrantes).
+INSERT INTO Banda VALUES (60, 'La Orquesta Gigante', 'clasica', 2000);
 
--- --- BANDAS ---
--- Banda 1: Toca en 2023 pero NO en 2022 (Para el punto 2)
-INSERT INTO Banda VALUES (1, 'Los Piojos', 'Rock', 1988);
 
--- Banda 2: Toca en 2022 y 2023 (No debería salir en el punto 2)
-INSERT INTO Banda VALUES (2, 'Divididos', 'Rock', 1988);
+-- =============================================
+-- INSERTAR ESCENARIOS
+-- =============================================
+-- Escenarios específicos pedidos en el punto 4.
+INSERT INTO Escenario VALUES (1, 'Gustavo Cerati', 'Zona Norte', 1, 500.00, 'Escenario principal techado');
+INSERT INTO Escenario VALUES (2, 'Carlos Gardel', 'Zona Sur', 0, 300.00, 'Escenario al aire libre');
 
--- Banda 3: Para el UPDATE (Punto 9)
-INSERT INTO Banda VALUES (3, 'Mempis la Blusera', 'Blues', 1978);
+-- Otros escenarios para pruebas
+INSERT INTO Escenario VALUES (3, 'Teatro Opera', 'Centro', 1, 200.00, 'Teatro antiguo');
+INSERT INTO Escenario VALUES (4, 'Plaza Central', 'Centro', 0, 1000.00, 'Plaza pública'); 
+-- El escenario 4 solo tendrá Rock and Roll para probar el punto 6.
 
--- Banda 4: Solo Rock and Roll (Para el punto 6)
-INSERT INTO Banda VALUES (4, 'Viejas Locas', 'Rock and Roll', 1990);
 
--- Banda 5: Banda numerosa (> 5 integrantes para el punto 5)
-INSERT INTO Banda VALUES (5, 'La Bersuit', 'Rock', 1988);
+-- =============================================
+-- INSERTAR INTEGRANTES
+-- =============================================
+-- Integrantes de 'Los Rocanroles' (Banda 10)
+-- Juan: Nació en 1985 (Rango 1980-1990 OK). Toca en 2023. -> DEBE SALIR EN PUNTO 1.
+INSERT INTO Integrante VALUES (11111111, 'Juan', 'Perez', 'Calle 1', 'juan@mail.com', '1985-05-20', 10);
+-- Pedro: Nació en 1970 (Fuera de rango). -> NO DEBE SALIR EN PUNTO 1.
+INSERT INTO Integrante VALUES (22222222, 'Pedro', 'Lopez', 'Calle 2', 'pedro@mail.com', '1970-08-15', 10);
 
--- --- ESCENARIOS ---
--- Escenarios específicos pedidos en el Punto 4
-INSERT INTO Escenario VALUES (10, 'Gustavo Cerati', 'La Plata', TRUE, 500, 'Escenario principal techado');
-INSERT INTO Escenario VALUES (20, 'Carlos Gardel', 'CABA', FALSE, 300, 'Escenario al aire libre');
+-- Integrantes de 'La Nueva Ola' (Banda 30 - Tocó 2023, No 2022)
+INSERT INTO Integrante VALUES (33333333, 'Maria', 'Becerra', 'Calle 3', 'maria@mail.com', '1990-12-01', 30);
 
--- Otros escenarios
-INSERT INTO Escenario VALUES (30, 'Cosquin Rock', 'Cordoba', FALSE, 10000, 'Predio montaña');
-INSERT INTO Escenario VALUES (40, 'Teatro Opera', 'La Plata', TRUE, 200, 'Teatro antiguo'); -- Solo tuvo Rock and Roll
+-- Integrantes de 'La Orquesta Gigante' (Banda 60 - Necesitamos 6 para el punto 5)
+INSERT INTO Integrante VALUES (601, 'Músico', 'Uno', 'Calle X', 'm1@mail.com', '1990-01-01', 60);
+INSERT INTO Integrante VALUES (602, 'Músico', 'Dos', 'Calle X', 'm2@mail.com', '1990-01-01', 60);
+INSERT INTO Integrante VALUES (603, 'Músico', 'Tres', 'Calle X', 'm3@mail.com', '1990-01-01', 60);
+INSERT INTO Integrante VALUES (604, 'Músico', 'Cuatro', 'Calle X', 'm4@mail.com', '1990-01-01', 60);
+INSERT INTO Integrante VALUES (605, 'Músico', 'Cinco', 'Calle X', 'm5@mail.com', '1990-01-01', 60);
+INSERT INTO Integrante VALUES (606, 'Músico', 'Seis', 'Calle X', 'm6@mail.com', '1990-01-01', 60);
 
--- --- INTEGRANTES ---
--- Integrantes de 'Los Piojos' (Nacidos entre 1980-1990 para punto 1)
-INSERT INTO Integrante VALUES ('11111111', 'Andres', 'Ciro', 'Calle 1', 'ciro@mail.com', '1985-05-15', 1);
-INSERT INTO Integrante VALUES ('22222222', 'Micky', 'Rodriguez', 'Calle 2', 'micky@mail.com', '1982-10-20', 1);
 
--- Integrante que tocó en Cerati y Gardel (Punto 4) -> Pertenece a Divididos (Banda 2)
-INSERT INTO Integrante VALUES ('33333333', 'Ricardo', 'Mollo', 'Calle 3', 'mollo@mail.com', '1957-08-17', 2);
+-- =============================================
+-- INSERTAR RECITALES
+-- =============================================
 
--- Integrantes de La Bersuit (Para que tenga > 5)
-INSERT INTO Integrante VALUES ('501', 'Gustavo', 'Cordera', 'Calle A', 'mail1@b.com', '1970-01-01', 5);
-INSERT INTO Integrante VALUES ('502', 'Juan', 'Subira', 'Calle B', 'mail2@b.com', '1975-01-01', 5);
-INSERT INTO Integrante VALUES ('503', 'Carlos', 'Martin', 'Calle C', 'mail3@b.com', '1976-01-01', 5);
-INSERT INTO Integrante VALUES ('504', 'Pepe', 'Cespedes', 'Calle D', 'mail4@b.com', '1977-01-01', 5);
-INSERT INTO Integrante VALUES ('505', 'Dani', 'Suarez', 'Calle E', 'mail5@b.com', '1978-01-01', 5);
-INSERT INTO Integrante VALUES ('506', 'Condor', 'Sbarbati', 'Calle F', 'mail6@b.com', '1979-01-01', 5);
+-- CASO: Banda 10 ('Los Rocanroles') toca en AMBOS escenarios clave (Para punto 4)
+-- Y toca en 2023 (Para punto 1)
+INSERT INTO Recital VALUES (100, '2023-05-10', '20:00:00', 1, 10); -- En Gustavo Cerati
+INSERT INTO Recital VALUES (101, '2023-06-15', '21:00:00', 2, 10); -- En Carlos Gardel
+INSERT INTO Recital VALUES (102, '2023-07-20', '22:00:00', 4, 10); -- En Plaza Central (Solo Rock)
 
--- --- RECITALES ---
--- Caso Punto 1 y 2: Recitales en 2023
-INSERT INTO Recital VALUES ('2023-05-10', '21:00', 10, 1); -- Los Piojos en Cerati (2023)
-INSERT INTO Recital VALUES ('2023-08-20', '22:00', 30, 1); -- Los Piojos en Cosquin (2023)
+-- CASO: Banda 30 ('La Nueva Ola') toca en 2023 pero NO en 2022 (Para punto 2)
+INSERT INTO Recital VALUES (200, '2023-02-14', '19:00:00', 3, 30);
 
--- Caso Punto 2: Recitales en 2022 (Divididos toca en 2022 y 2023)
-INSERT INTO Recital VALUES ('2022-02-15', '20:00', 10, 2);
-INSERT INTO Recital VALUES ('2023-04-15', '21:00', 20, 2); -- Divididos en Carlos Gardel (2023)
-INSERT INTO Recital VALUES ('2023-09-15', '21:00', 10, 2); -- Divididos en Gustavo Cerati (2023) -> Mollo cumple punto 4
+-- CASO: Banda 40 ('Los Clásicos') toca en 2023 Y en 2022 (Debe ser excluida en punto 2)
+INSERT INTO Recital VALUES (300, '2023-01-10', '20:00:00', 3, 40);
+INSERT INTO Recital VALUES (301, '2022-12-25', '23:00:00', 3, 40); -- Recital en 2022
 
--- Caso Punto 3: Cronograma del 04/12/2023
-INSERT INTO Recital VALUES ('2023-12-04', '18:00', 10, 3); -- Mempis en Cerati
-INSERT INTO Recital VALUES ('2023-12-04', '20:00', 20, 4); -- Viejas Locas en Gardel
+-- CASO: Recital específico para fecha 04/12/2023 (Para punto 3)
+INSERT INTO Recital VALUES (400, '2023-12-04', '18:30:00', 2, 20); -- Banda Pop en Carlos Gardel
 
--- Caso Punto 6: Escenario que SOLO tuvo Rock and Roll
--- Teatro Opera (40) solo tendrá a Viejas Locas (Rock and Roll)
-INSERT INTO Recital VALUES ('2021-01-01', '21:00', 40, 4);
+-- CASO: Recitales en 2024 (Para punto 8)
+INSERT INTO Recital VALUES (500, '2024-01-15', '20:00:00', 1, 10);
+INSERT INTO Recital VALUES (501, '2024-03-20', '21:00:00', 1, 20);
 
--- Caso Punto 7: Recitales en cubiertos (TRUE) durante 2023
--- Ya tenemos a Los Piojos en Cerati (Cubierto) en 2023
-
--- Caso Punto 8: Recitales en 2024
-INSERT INTO Recital VALUES ('2024-01-10', '20:00', 10, 1);
-INSERT INTO Recital VALUES ('2024-01-15', '22:00', 10, 2);
+-- CASO: Banda 20 toca en Plaza Central (Esto "ensucia" el escenario 4 para el punto 6?)
+-- NO lo agrego para dejar el Escenario 4 (Plaza Central) puro de Rock and Roll.
+-- Pero agrego Banda 20 en Escenario 1 para que Escenario 1 NO sea solo Rock.
+INSERT INTO Recital VALUES (600, '2023-08-01', '20:00:00', 1, 20);
