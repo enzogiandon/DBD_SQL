@@ -1,0 +1,6 @@
+SELECT COUNT(*) AS CANTIDAD, AVG(RESULTADO) AS PROMEDIO
+FROM Inscripcion
+WHERE resultado IS NOT NULL
+  AND anio = 2025
+  AND semestre = 2;
+
